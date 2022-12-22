@@ -1,5 +1,6 @@
 package com.domo.dividend.service;
 
+import com.domo.dividend.exception.impl.AlreadyExistUserException;
 import com.domo.dividend.model.Auth;
 import com.domo.dividend.persist.UserRepository;
 import com.domo.dividend.persist.entity.UserEntity;
@@ -28,7 +29,7 @@ public class UserService implements UserDetailsService {
     public UserEntity register(Auth.SignUp user) {
         boolean exists = userRepository.existsByUsername(user.getUsername());
         if (exists) {
-            throw new RuntimeException("이미 사용 중인 아이디 입니다");
+            throw new AlreadyExistUserException();
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
