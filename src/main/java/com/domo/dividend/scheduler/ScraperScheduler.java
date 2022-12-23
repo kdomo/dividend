@@ -46,6 +46,7 @@ public class ScraperScheduler {
 
                         if (!exists) {
                             this.dividendRepository.save(i);
+                            log.info("insert new dividend -> {}", i);
                         }
                     });
             try {
