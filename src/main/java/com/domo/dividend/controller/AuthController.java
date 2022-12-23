@@ -4,12 +4,15 @@ import com.domo.dividend.model.Auth;
 import com.domo.dividend.security.TokenProvider;
 import com.domo.dividend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -28,6 +31,7 @@ public class AuthController {
     public ResponseEntity<?> signin(@RequestBody Auth.SignIn request) {
         var user = userService.authenticate(request);
         var token = tokenProvider.generateToken(user.getUsername(), user.getRoles());
+        log.info("user login -> {}", request.getUsername());
         return ResponseEntity.ok(token);
     }
 }
