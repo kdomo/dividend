@@ -3,6 +3,7 @@ package com.domo.dividend.service;
 import com.domo.dividend.model.Company;
 import com.domo.dividend.model.Dividend;
 import com.domo.dividend.model.ScrapedResult;
+import com.domo.dividend.model.constants.CacheKey;
 import com.domo.dividend.persist.CompanyRepository;
 import com.domo.dividend.persist.DividendRepository;
 import com.domo.dividend.persist.entity.CompanyEntity;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +22,7 @@ public class FinanceService {
     private final CompanyRepository companyRepository;
     private final DividendRepository dividendRepository;
 
+    @Cacheable(key = "#companyName", value = CacheKey.KEY_FINANCE)
     public ScrapedResult getDividendByCompanyName(String companyName) {
         // 1. 회사명을 기준으로 회사 정보를 조회
         CompanyEntity company = this.companyRepository.findByName(companyName)
